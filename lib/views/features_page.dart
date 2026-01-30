@@ -2,6 +2,7 @@
 
 import 'package:demo_ai_even/views/features/bmp_page.dart';
 import 'package:demo_ai_even/views/features/notification/notification_page.dart';
+import 'package:demo_ai_even/views/features/pomodoro_page.dart';
 import 'package:demo_ai_even/views/features/text_page.dart';
 import 'package:flutter/material.dart';
 
@@ -81,6 +82,28 @@ class _FeaturesPageState extends State<FeaturesPage> {
                   margin: const EdgeInsets.only(top: 16),
                   child: const Text(
                     "Text",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PomodoroPage()),
+                  );
+                },
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 16),
+                  child: const Text(
+                    "Pomodoro",
                     style: TextStyle(fontSize: 16),
                   ),
                 ),

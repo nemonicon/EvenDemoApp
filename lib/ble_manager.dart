@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:demo_ai_even/app.dart';
+import 'package:demo_ai_even/controllers/pomodoro_controller.dart';
 import 'package:demo_ai_even/services/ble.dart';
 import 'package:demo_ai_even/services/evenai.dart';
+import 'package:demo_ai_even/services/pomodoro_service.dart';
 import 'package:demo_ai_even/services/proto.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 typedef SendResultParse = bool Function(Uint8List value);
 
@@ -158,15 +161,23 @@ class BleManager {
         case 0:
           App.get.exitAll();
           break;
-        case 1: 
-          if (res.lr == 'L') {
+        case 1:
+          if (Get.isRegistered<PomodoroController>() &&
+              Get.find<PomodoroController>().isActive.value) {
+            PomodoroService.get.skipPhase();
+          } else if (res.lr == 'L') {
             EvenAI.get.lastPageByTouchpad();
           } else {
             EvenAI.get.nextPageByTouchpad();
           }
           break;
         case 23: //BleEvent.evenaiStart:
-          EvenAI.get.toStartEvenAIByOS();
+          if (Get.isRegistered<PomodoroController>() &&
+              Get.find<PomodoroController>().isActive.value) {
+            PomodoroService.get.toggleStartPause();
+          } else {
+            EvenAI.get.toStartEvenAIByOS();
+          }
           break;
         case 24: //BleEvent.evenaiRecordOver:
           EvenAI.get.recordOverByOS();
